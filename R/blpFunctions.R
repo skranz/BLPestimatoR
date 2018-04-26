@@ -242,13 +242,12 @@ estimateBLP <- function(Xlin, Xexo, Xrandom, instruments, demographics,
   ##SK: Transform factor variables to dummies in productData
   ## Note that I changed the order of tests
   ## Test for numeric variables will be done further below
-  ## TO DO: Adapt dimensions of starting.guesses.theta2 when
-  ## Xrandom are expanded
-  is.factor = sapply(productData[Xlin], function(vals) is.factor(vals) | is.character(vals))
+  is.factor = sapply(productData[unique(c(Xlin,Xrandom,instruments))], function(vals) is.factor(vals) | is.character(vals))
   if (any(is.factor)) {
-    res = BLP.factor.to.dummies(productData, Xlin,Xrandom,Xexo, starting.guesses.theta2)
+    res = BLP.factor.to.dummies(productData, Xlin,Xrandom,Xexo,instruments, starting.guesses.theta2)
     productData = res$dat;
     Xlin=res$Xlin; Xrandom=res$Xrandom; Xexo=res$Xexo
+    instruments = res$instruments
     starting.guesses.theta2 = res$starting.guess.theta2
     input_data_strings_withoutCDID <- c(Xlin, Xexo, Xrandom, shares, instruments)
   }
