@@ -11,7 +11,8 @@
 elasticitiesBLP <- function(blp, var=names(blp$elasticities)[[1]], market=1, products=NULL, round.digits=3) {
   el = blp$elasticities[[var]][[market]]
   if (!is.null(products)) {
-    ind = which(rownames(el) %in% products)
+    ind = match(products, rownames(el))
+    ind = na.omit(ind)
     el = el[ind,ind]
   }
   if (!is.null(round.digits)) {
